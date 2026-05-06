@@ -1,0 +1,22 @@
+[project]
+name = "lifewiki-companion"
+version = "0.1.0"
+description = "Local-first Telegram-facing Markdown LifeWiki companion."
+requires-python = ">=3.12"
+
+[project.optional-dependencies]
+pdf = ["pypdf>=4"]
+
+[project.scripts]
+lifewiki = "app.main:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["raw*", "wiki*", "schema*"]
+
+[tool.unittest]
+start-directory = "app/tests"
