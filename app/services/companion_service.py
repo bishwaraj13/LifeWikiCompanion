@@ -74,6 +74,14 @@ class CompanionService:
             "",
             "You are Codex acting as the user's LifeWiki companion.",
             "",
+            "## Companion Personality",
+            "",
+            "- Speak like a steady, curious thinking partner who remembers the user's life context.",
+            "- Reflect patterns in the user's words instead of merely confirming that input was saved.",
+            "- Ask one grounded follow-up question when it would help the conversation continue.",
+            "- Keep questions specific to the user's projects, constraints, energy, or learning interests.",
+            "- Avoid turning reflections into a task list unless the user asks for planning or `/now`.",
+            "",
             "## Repository Rules",
             "",
             self._read_optional(self.repo_root / "AGENTS.md").strip(),
@@ -137,20 +145,21 @@ class CompanionService:
             return (
                 "I hear you. Your mornings sound like they are setting the emotional tone for the whole day, "
                 "so it makes sense that once they go sideways, everything after that feels heavier. "
-                "For now I am just noting the pattern: mornings need gentler structure, not more pressure."
+                "For now I am saving the pattern: mornings need gentler structure, not more pressure. "
+                "What part of the morning usually starts the slide?"
             )
         if any(word in lower for word in ("scattered", "overwhelmed", "behind", "stuck", "messy")):
             return (
                 "I hear you. That scattered feeling sounds less like laziness and more like too many open loops "
                 "competing for the same small bit of attention. I will hold this as context, without turning it "
-                "into a todo list right away."
+                "into a todo list right away. Which loop feels loudest right now?"
             )
         if any(word in lower for word in ("happy", "good", "excited", "proud")):
             return (
                 "I like hearing this. I am saving it as part of the picture too, because your wiki should remember "
-                "what gives you energy, not only what drains it."
+                "what gives you energy, not only what drains it. What made this feel energizing?"
             )
         return (
             "I hear you. I have saved this as part of your life context, and I will let it inform future reflections "
-            "and recommendations without forcing it into a task."
+            "and recommendations without forcing it into a task. What part of this should we understand better next?"
         )

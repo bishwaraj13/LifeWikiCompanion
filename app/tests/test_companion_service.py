@@ -58,6 +58,32 @@ class CompanionServiceTests(unittest.TestCase):
             self.assertNotIn("Timebox:", response.text)
             self.assertIn("scattered", response.text)
 
+    def test_fallback_response_keeps_conversation_two_way(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            service = CompanionService(LifeWikiPaths(Path(tmp)), runner=None)
+
+            response = service.reflect(
+                "I am trying to balance Festo work, screencast-refiner, and learning VLA.",
+                at="2026-05-06T21:30:00+05:30",
+            )
+
+            self.assertIn("saved", response.text.lower())
+            self.assertIn("?", response.text)
+
+    def test_prompt_defines_companion_personality_and_two_way_reply(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            runner = FakeCodexRunner(stdout="I hear you. What part should we untangle first?")
+            service = CompanionService(LifeWikiPaths(Path(tmp)), runner=runner)
+
+            service.reflect(
+                "I want the companion to talk back, not just capture input.",
+                at="2026-05-06T22:00:00+05:30",
+            )
+
+            prompt = runner.prompts[0]
+            self.assertIn("Companion Personality", prompt)
+            self.assertIn("Ask one grounded follow-up question", prompt)
+
 
 if __name__ == "__main__":
     unittest.main()
